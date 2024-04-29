@@ -9,44 +9,51 @@ on:
       - main
 
 jobs:
-  build_server:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build server Docker image
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build server docker image
         run: |
           cd server
           docker build -t blackjack-buddy-server .
 
-  build_ui:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build UI Docker image
+      - name: Build UI docker image
         run: |
           cd ui
           docker build -t blackjack-buddy-ui .
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f kubernetes/ --kubeconfig ${{ secrets.KUBECONFIG }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Kubeconfig
+        run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ${{ github.workspace }}/kubeconfig.yml
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
+      - name: Deploy to Kubernetes
+        run: kubectl --kubeconfig ${{ github.workspace }}/kubeconfig.yml apply -f kubernetes/
+
   test:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Install dependencies and run tests
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
         run: |
           cd test
           npm install
-          npx playwright install --with-deps
-          npx playwright test
+
+      - name: Install Playwright dependencies
+        run: npx playwright install --with-deps
+
+      - name: Run tests
+        run: npx playwright test
