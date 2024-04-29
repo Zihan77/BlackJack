@@ -30,10 +30,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set up Kubernetes config
       run: |
-        echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+        mkdir ${HOME}/.kube
+        echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+        cat ${HOME}/.kube/config
+    - name: use context
+      run: kubectl config use-context blackjack-buddy
 
     - name: Deploy to Kubernetes
       run: |
