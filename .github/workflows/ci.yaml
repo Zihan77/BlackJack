@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy to Kubernetes
-        run: kubectl --kubeconfig ${{ secrets.KUBECONFIG }} apply -f kubernetes/
+        run: kubectl apply -f kubernetes/ --kubeconfig ${{ secrets.KUBECONFIG }}
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
