@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blackjack-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blackjack-server
+  template:
+    metadata:
+      labels:
+        app: blackjack-server
+    spec:
+      containers:
+      - name: blackjack-server
+        image: blackjack-buddy-server
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        env:
+          - name: MONGO_URI
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo_uri
+          - name: PORT
+            value: "3000"
+

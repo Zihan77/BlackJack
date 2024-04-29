@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blackjack-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blackjack-ui
+  template:
+    metadata:
+      labels:
+        app: blackjack-ui
+    spec:
+      containers:
+      - name: blackjack-ui
+        image: blackjack-buddy-ui
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+
