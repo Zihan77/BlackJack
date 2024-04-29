@@ -77,7 +77,31 @@ import HeaderComponent from '../components/game/HeaderComponent.vue';
 import UserComponent from '../components/game/UserComponent.vue';
 import BetModalComponent from '../components/game/BetModalComponent.vue';
 import CardComponent from '../components/game/CardComponent.vue';
-import { Card, Player, GamePhase } from "../../../server/src/model"
+
+const SUITS = ["hearts", "diamonds", "clubs", "spades"];
+const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+const Outcome = ['Win', 'Lose', 'Tie', 'In Game']
+
+export interface Card {
+  rank: typeof RANKS[number]
+  suit: typeof SUITS[number]
+}
+
+export interface Player {
+  id: string
+  name: string
+  avatar?: string
+  slogan?: string
+  cards: Card[]
+  currentHand: number
+  currentBet: number
+  remainCoins: number
+  stand: boolean
+  newRound: boolean
+  outcome: typeof Outcome[number]
+}
+
+export type GamePhase = 'Waiting for Players' | 'Place Bet' | 'In Round' | 'End Round' | 'Game Over'
 
 interface RoundResult {
   outcome: string;
