@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build server Docker image
+        run: |
+          cd server
+          docker build -t blackjack-buddy-server .
+
+  build_ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build UI Docker image
+        run: |
+          cd ui
+          docker build -t blackjack-buddy-ui .
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Kubernetes
+        run: kubectl --kubeconfig ${{ secrets.KUBECONFIG }} apply -f kubernetes/
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies and run tests
+        run: |
+          cd test
+          npm install
+          npx playwright install --with-deps
+          npx playwright test
