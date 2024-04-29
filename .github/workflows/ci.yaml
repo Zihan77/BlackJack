@@ -28,11 +28,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Kubernetes
-        run: kubectl apply -f kubernetes/
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Kubernetes config
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f kubernetes/
 
   test:
     runs-on: ubuntu-latest
