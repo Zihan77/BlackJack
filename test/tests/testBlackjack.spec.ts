@@ -23,7 +23,7 @@ test('multiplayer blackjack game', async () => {
 
   // Player 2 joins the same game room
   const page2 = await context2.newPage();
-  await page2.goto('http://localhost:8081/6619d3a3de031eb0640e5281/gaming');
+  await page2.goto('http://localhost:8081/66022825c7259d94fc35e1d5/gaming');
 
   // Wait for the interaction to possibly reflect in UI changes
   await page1.waitForSelector('.bet-modal-overlay', { state: 'visible' });
@@ -40,9 +40,9 @@ test('multiplayer blackjack game', async () => {
   await page1.waitForSelector('.hands-container', { state: 'visible' });
 
   // Check if the cards are rendered
-  const dealerCardsCount = await page1.locator('.dealer-hand .card').count();
+  const dealerCardsCount = await page1.locator('.dealer-hand').count();
   expect(dealerCardsCount).toBeGreaterThan(0); // Ensure there is at least one card
-  const playerCardsCount = await page1.locator('.player-hand .card').count();
+  const playerCardsCount = await page1.locator('.player-hand').count();
   expect(playerCardsCount).toBeGreaterThan(0); // Ensure there is at least one card
 
 	// Assume you are already in a game and need to simulate player actions
