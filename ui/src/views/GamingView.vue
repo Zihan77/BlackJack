@@ -129,7 +129,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const socket = io('http://localhost:3000'); // Replace with your actual server URL
+    const socket = io('http://localhost:31001'); // Replace with your actual server URL
     const dealerHand = ref<Card[]>([]);
     const playerHand = ref<Card[]>([]);
     const dealerScore = ref(0);
@@ -151,7 +151,7 @@ export default defineComponent({
 
     async function fetchUserData(playerId: string) {
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${playerId}`);
+        const response = await fetch(`http://localhost:31001/api/users/${playerId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

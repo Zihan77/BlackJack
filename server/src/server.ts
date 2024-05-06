@@ -7,7 +7,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 const server = new HttpServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:8081",
+    origin: "http://localhost:31000",
     methods: ["GET", "POST"],
     credentials: true
   }

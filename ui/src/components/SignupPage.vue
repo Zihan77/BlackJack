@@ -42,7 +42,7 @@
         console.log(password)
 
 
-        fetch('http://localhost:3000/api/auth/signup', { // Use your backend API URL
+        fetch('http://localhost:31001/api/auth/signup', { // Use your backend API URL
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

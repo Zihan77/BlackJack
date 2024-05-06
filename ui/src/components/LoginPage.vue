@@ -39,7 +39,7 @@ export default {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       // login logic here
-      fetch('http://localhost:3000/api/auth/login', {
+      fetch('http://localhost:31001/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
