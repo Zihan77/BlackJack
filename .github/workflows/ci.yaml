@@ -31,16 +31,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up Kubernetes config
-      run: |
-        mkdir ${HOME}/.kube
-        echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
-        cat ${HOME}/.kube/config
-    - name: use context
-      run: kubectl config use-context docker-desktop
-
+    env:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    run: |
+      echo "$KUBECONFIG" | base64 --decode > ./kubeconfig
+      export KUBECONFIG=./kubeconfig
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f kubernetes/
+    # - name: Set up Kubernetes config
+    #   run: |
+    #     mkdir ${HOME}/.kube
+    #     echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+    #     cat ${HOME}/.kube/config
+    # - name: use context
+    #   run: kubectl config use-context docker-desktop
+    #   run: kubectl --kubeconfig ${{ secrets.KUBE_CONFIG }} apply -f kubernetes/
+
+    # - name: Deploy to Kubernetes
+    #   run: |
+    #     kubectl apply -f kubernetes/
 
   test:
     runs-on: ubuntu-latest
