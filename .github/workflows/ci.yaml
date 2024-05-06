@@ -31,11 +31,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up Kubernetes config
-    env:
-      KUBECONFIG: ${{ secrets.KUBECONFIG }}
-    run: |
-      echo "$KUBECONFIG" | base64 --decode > ./kubeconfig
-      export KUBECONFIG=./kubeconfig
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "$KUBECONFIG" | base64 --decode > ./kubeconfig
+        export KUBECONFIG=./kubeconfig
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f kubernetes/
