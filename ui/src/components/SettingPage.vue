@@ -86,7 +86,7 @@ export default defineComponent({
       const { sound, ...settingsToSave } = settings.value; // Exclude 'sound' from the object sent to the server
       console.log(settingsToSave);
       // Use the PUT method to update user data at the backend
-      const url = `http://localhost:31001/api/users/${props.playerId}`;
+      const url = `http://localhost:3000/api/users/${props.playerId}`;
       fetch(url, {
         method: 'PUT',
         headers: {
@@ -113,7 +113,7 @@ export default defineComponent({
     }
 
     function fetchUserData(playerId: string) {
-      fetch(`http://localhost:31001/api/users/${playerId}`)
+      fetch(`http://localhost:3000/api/users/${playerId}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
